@@ -1,7 +1,7 @@
 // see http://vuejs-templates.github.io/webpack for documentation.
 var path = require('path')
 
-module.exports = {
+var config = {
   build: {
     env: require('./prod.env'),
     index: path.resolve(__dirname, '../dist/index.html'),
@@ -36,3 +36,7 @@ module.exports = {
     cssSourceMap: false
   }
 }
+
+config.ENV = config[(process.env.NODE_ENV == '"production"' ? 'build' : 'dev')].env
+
+module.exports = config
