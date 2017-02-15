@@ -1,14 +1,15 @@
 import Vue from 'vue'
 import Axios from 'axios'
-import { ENV } from 'config'
+import settings from 'settings'
 
-Axios.defaults.baseURL = ENV.apiURL
+Axios.defaults.baseURL = settings.apiURL
 
 Axios.interceptors.request.use(config => {
-  config.headers['Authorization'] = 'token'
+  config.headers['Authorization'] = 'Bearer ' + localStorage.getItem(settings.authItem)
   return config
 })
 
-Vue.prototype.$ajax = Axios
+Vue.prototype.$http = Axios
 
+global.API = Axios
 export default Axios
