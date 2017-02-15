@@ -37,6 +37,4 @@ var config = {
   }
 }
 
-config.ENV = config[(process.env.NODE_ENV == '"production"' ? 'build' : 'dev')].env
-
 module.exports = config

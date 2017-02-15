@@ -1,4 +1,3 @@
 module.exports = {
-  NODE_ENV: '"production"',
-  apiURL: 'http://localhost:8888'
+  NODE_ENV: '"production"'
 }
