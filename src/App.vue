@@ -1,10 +1,26 @@
 <template>
-  <div id="app">
-    <div class="block">
-      <el-button v-if="!isAuthenticated" @click="login()">Login</el-button>
-      <el-button v-else @click="logout()">Logout</el-button>
+  <div id='app'>
+    <!-- header -->
+    <div class='header'>
+      <div style='float: left'>
+        <img src='./assets/logo.png'>
+        <h4>boilerplate</h4>
+      </div>
+      <!-- user dropdown -->
+      <el-dropdown v-if='isAuthenticated && authUser' trigger='click'>
+        <span class='el-dropdown-link'>
+          <img :src='authUser.picture'>&nbsp;
+          <h4 v-text='authUser.nickname'></h4>
+          <i class='el-icon-caret-bottom el-icon--right'></i>
+        </span>
+        <el-dropdown-menu slot='dropdown'>
+          <el-dropdown-item><span @click='logout()'>Logout</span></el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
+      <!-- else show login button -->
+      <el-button v-else @click='login()'>Login</el-button>
     </div>
-    <img src="./assets/logo.png">
+    <!-- router view (content) -->
     <router-view></router-view>
   </div>
 </template>
@@ -35,7 +51,7 @@ export default {
       this.lock = new Auth0Lock(settings.auth0.clientID, settings.auth0.domain)
       // handle authenticated user
       this.lock.on('authenticated', authResult => {
-        console.log('authenticated')
+        console.log('authenticated with Auth0')
         localStorage.setItem(settings.authItem, authResult.idToken)
         this.setAuth()
         this.lock.getProfile(authResult.idToken, (err, profile) => {
@@ -73,12 +89,39 @@ export default {
 </script>
 
 <style>
-#app {
+body {
+  color: #2c3e50;
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
+}
+
+#app {
+  margin-top: 60px;
+  padding: 1em;
+  position: relative;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+}
+
+.header {
+  background-color: white;
+  border-bottom: solid 1px #ddd;
+  height: 60px;
+  left: 0;
+  line-height: 60px;
+  padding: 0 1em;
+  position: fixed;
+  right: 0;
+  text-align: right;
+  top: 0;
+}
+.header img {
+  border-radius: 50%;
+  height: 30px;
+  width: 30px;
+  vertical-align: middle;
+}
+.header h4 {
+  display: inline-block;
+  margin: 0;
 }
 </style>
