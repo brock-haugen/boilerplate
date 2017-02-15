@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import './api'
+import head from './head'
 import router from './router'
 import store from './store'
 
@@ -13,8 +14,9 @@ import App from './App'
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
+  head,
   router,
   vuex: store,
-  template: '<App/>',
+  template: '<App />',
   components: { App }
 })
