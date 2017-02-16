@@ -2,10 +2,10 @@
   <div id='app'>
     <!-- header -->
     <div class='header'>
-      <div style='float: left'>
+      <router-link to='/' class='home-link'>
         <img src='./assets/logo.png'>
         <h4>boilerplate</h4>
-      </div>
+      </router-link>
       <!-- user dropdown -->
       <el-dropdown v-if='isAuthenticated && authUser' trigger='click'>
         <span class='el-dropdown-link'>
@@ -26,6 +26,7 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex'
 import Auth0 from 'auth0-js'
 import Auth0Lock from 'auth0-lock'
 import settings from 'settings'
@@ -35,11 +36,10 @@ export default {
   data () {
     return {
       auth0: null,
-      authUser: null,
-      isAuthenticated: false,
       lock: null
     }
   },
+  computed: mapGetters([ 'authUser', 'isAuthenticated' ]),
   watch: {
     isAuthenticated (n, o) {
       if (n !== o) {
@@ -52,12 +52,12 @@ export default {
     }
   },
   methods: {
+    ...mapActions([ 'setAuthUser' ]),
     setAuth () {
-      this.isAuthenticated = !!localStorage.getItem(settings.authToken)
       try {
-        this.authUser = JSON.parse(localStorage.getItem(settings.authProfile))
+        this.setAuthUser(JSON.parse(localStorage.getItem(settings.authProfile)))
       } catch (e) {
-        this.authUser = null
+        this.setAuthUser(null)
       }
     },
     getProfile () {
@@ -154,6 +154,11 @@ body {
   right: 0;
   text-align: right;
   top: 0;
+}
+.header .home-link {
+  color: inherit;
+  float: left;
+  text-decoration: none;
 }
 .header img {
   border-radius: 50%;
