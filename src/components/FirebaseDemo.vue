@@ -1,6 +1,6 @@
 <template>
   <div id='firebase-demo'>
-    <el-button @click='addTimeStamp()'>Add TimeStamp</el-button>
+    <el-button v-show='isAuthenticated' @click='addTimeStamp()'>Add TimeStamp</el-button>
     <div v-for='stamp in stamps'>
       <h3 v-text='stamp.when' @click='deleteStamp(stamp)'></h3>
     </div>
@@ -8,6 +8,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
   name: 'firebase-demo',
   firebase () {
@@ -15,6 +17,7 @@ export default {
       stamps: this.$db.ref('stamps')
     }
   },
+  computed: mapGetters([ 'isAuthenticated' ]),
   methods: {
     addTimeStamp () {
       this.$firebaseRefs.stamps.push({
@@ -22,7 +25,9 @@ export default {
       })
     },
     deleteStamp (stamp) {
-      this.$firebaseRefs.stamps.child(stamp['.key']).remove()
+      if (this.isAuthenticated) {
+        this.$firebaseRefs.stamps.child(stamp['.key']).remove()
+      }
     }
   }
 }

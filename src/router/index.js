@@ -7,21 +7,14 @@ Vue.use(Router)
 const checkAuth = () => !!localStorage.getItem(settings.authToken)
 
 import FirebaseDemo from 'components/FirebaseDemo'
-import Hello from 'components/Hello'
 
 let router = new Router({
   mode: 'history',
   routes: [
     {
-      path: '/firebase-demo',
-      name: 'FirebaseDemo',
-      component: FirebaseDemo,
-      meta: { private: true }
-    },
-    {
       path: '/',
-      name: 'Hello',
-      component: Hello
+      name: 'FirebaseDemo',
+      component: FirebaseDemo
     }
   ]
 })
