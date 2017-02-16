@@ -2,6 +2,7 @@
   <div class="hello">
     <img src='../assets/logo.png'>
     <h1>{{ msg }}</h1>
+    <router-link :to='{name: "FirebaseDemo"}'>Firebase Demo</router-link> (requires authentication)
     <h2>Essential Links</h2>
     <ul>
       <li><a href="https://vuejs.org" target="_blank">Core Docs</a></li>

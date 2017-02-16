@@ -1,8 +1,10 @@
 import Vue from 'vue'
-import './api'
 import head from './head'
 import router from './router'
 import store from './store'
+
+import './api'
+import './firebase'
 
 import ElementUI from 'element-ui'
 import locale from 'element-ui/lib/locale/lang/en'

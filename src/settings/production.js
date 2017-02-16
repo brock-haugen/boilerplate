@@ -5,5 +5,12 @@ export default {
     domain: 'brock-haugen.auth0.com'
   },
   authItem: 'auth_token',
-  authProfile: 'profile'
+  authProfile: 'profile',
+  firebase: {
+    apiKey: 'AIzaSyBR-HDOd6DSMlyqdVF8dB3UWgbnvsmMj04',
+    authDomain: 'test-project-27cf2.firebaseapp.com',
+    databaseURL: 'https://test-project-27cf2.firebaseio.com',
+    storageBucket: 'test-project-27cf2.appspot.com',
+    messagingSenderId: '584354625256'
+  }
 }
