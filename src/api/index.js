@@ -5,7 +5,7 @@ import settings from 'settings'
 Axios.defaults.baseURL = settings.apiURL
 
 Axios.interceptors.request.use(config => {
-  config.headers['Authorization'] = 'Bearer ' + localStorage.getItem(settings.authItem)
+  config.headers['Authorization'] = 'Bearer ' + localStorage.getItem(settings.authToken)
   return config
 })
 

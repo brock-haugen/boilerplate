@@ -1,10 +1,11 @@
 export default {
   apiUrl: 'http://localhost:8080',
   auth0: {
-    clientID: 'i9MbJJkSQ58rRbtt9FVT1JOjtJQ4OzBL',
+    clientID: '2kyJXDrtqChOgjFQxaxRw9J0v2S5sVB1',
     domain: 'brock-haugen.auth0.com'
   },
-  authItem: 'auth_token',
+  authAccessToken: 'auth_access_token',
+  authToken: 'auth_token',
   authProfile: 'profile',
   firebase: {
     apiKey: 'AIzaSyBR-HDOd6DSMlyqdVF8dB3UWgbnvsmMj04',

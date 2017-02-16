@@ -4,7 +4,7 @@ import Router from 'vue-router'
 
 Vue.use(Router)
 
-const checkAuth = () => !!localStorage.getItem(settings.authItem)
+const checkAuth = () => !!localStorage.getItem(settings.authToken)
 
 import FirebaseDemo from 'components/FirebaseDemo'
 import Hello from 'components/Hello'

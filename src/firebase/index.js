@@ -15,6 +15,7 @@ if (settings.firebase) {
   db = firebaseApp.database()
 }
 
+Vue.prototype.$firebase = firebase
 Vue.prototype.$db = db
 
 export default db
