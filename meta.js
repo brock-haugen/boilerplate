@@ -1,4 +1,7 @@
 module.exports = {
+  helpers: {
+    lowercase: str => str.toLowerCase()
+  },
   "prompts": {
     "name": {
       "type": "string",
@@ -42,9 +45,11 @@ module.exports = {
   },
   "filters": {
     "src/api/*": "api == 'ajax'",
+    "src/components/Hello.vue": "api == 'ajax'",
     ".firebaserc": "api == 'firebase'",
     "firebase.json": "api == 'firebase'",
     "src/firebase/*": "api == 'firebase'",
+    "src/components/FirebaseDemo.vue": "api == 'firebase'",
     "build/webpack.test.conf.js": "tests",
     "config/test.env.js": "tests",
     "test/unit/**/*": "tests",

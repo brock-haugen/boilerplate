@@ -3,8 +3,7 @@ import head from './head'
 import router from './router'
 import store from './store'
 
-import './api'
-import './firebase'
+import {{#if_eq api "firebase"}}'./firebase'{{/if_eq}}{{#if_eq api "ajax"}}'./api'{{/if_eq}}
 
 import ElementUI from 'element-ui'
 import locale from 'element-ui/lib/locale/lang/en'

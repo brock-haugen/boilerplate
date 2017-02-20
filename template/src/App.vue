@@ -4,8 +4,8 @@
     <div class='header'>
       <router-link to='/' class='home-link'>
         <img src='./assets/logo.png'>
-        <h4>boilerplate</h4>
-      </router-link>
+        <h4>{{ lowercase name }}</h4>
+      </router-link>{{#if auth0}}
       <!-- user dropdown -->
       <el-dropdown v-if='isAuthenticated && authUser' trigger='click'>
         <span class='el-dropdown-link'>
@@ -18,7 +18,7 @@
         </el-dropdown-menu>
       </el-dropdown>
       <!-- else show login button -->
-      <el-button v-else @click='login()'>Login</el-button>
+      <el-button v-else @click='login()'>Login</el-button>{{/if}}
     </div>
     <!-- router view (content) -->
     <router-view></router-view>
@@ -26,14 +26,14 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+{{#if auth0}}import { mapActions, mapGetters } from 'vuex'
 import Auth0 from 'auth0-js'
 import Auth0Lock from 'auth0-lock'
-import settings from 'settings'
+{{/if}}import settings from 'settings'
 
 export default {
   name: 'app',
-  data () {
+  {{#if auth0}}data () {
     return {
       auth0: null,
       lock: null
@@ -71,7 +71,7 @@ export default {
           return
         }
         localStorage.setItem(settings.authProfile, JSON.stringify(profile))
-        this.setAuth()
+        this.setAuth(){{#if_eq api "firebase"}}
 
         if (settings.firebase) {
           var options = {
@@ -88,7 +88,7 @@ export default {
               this.$firebase.auth().signInWithCustomToken(result.id_token).catch(console.error)
             }
           })
-        }
+        }{{/if_eq}}
       })
     },
     initializeAuth0 () {
@@ -109,22 +109,24 @@ export default {
       if (this.lock) this.lock.show()
     },
     logout () {
-      this.$firebase.auth().signOut().then(() => {
+      {{#if_eq api "firebase"}}this.$firebase.auth().signOut().then(() => {
         localStorage.clear()
         this.setAuth()
         this.$router.push('/')
-      }).catch(console.error)
+      }).catch(console.error){{/if_eq}}{{#if_eq api "ajax"}}localStorage.clear()
+      this.setAuth()
+      this.$router.push('/'){{/if_eq}}
     }
   },
-  mounted () {
-    console.log('Running app in', settings.NODE_ENV)
+  {{/if}}mounted () {
+    console.log('Running app in', settings.NODE_ENV){{#if auth0}}
     this.setAuth()
     if (settings.auth0) {
       this.initializeAuth0()
       if (this.isAuthenticated) {
         this.getProfile()
       }
-    }
+    }{{/if}}
   }
 }
 </script>

@@ -5,7 +5,7 @@ Vue.use(VueHead)
 
 export default {
   title: {
-    inner: 'Boilerplate'
+    inner: '{{ lowercase name }}'
   },
   link: [
     { rel: 'shortcut icon', href: require('../assets/logo.png') }
