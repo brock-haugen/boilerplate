@@ -53,11 +53,16 @@ export default {
   },
   methods: {
     ...mapActions([ 'setAuthUser' ]),
-    setAuth () {
-      try {
-        this.setAuthUser(JSON.parse(localStorage.getItem(settings.authProfile)))
-      } catch (e) {
-        this.setAuthUser(null)
+    setAuth (payload) {
+      if (payload) {
+        localStorage.setItem(settings.authProfile, JSON.stringify(payload))
+        this.setAuthUser(payload)
+      } else {
+        try {
+          this.setAuthUser(JSON.parse(localStorage.getItem(settings.authProfile)))
+        } catch (e) {
+          this.setAuthUser(null)
+        }
       }
     },
     getProfile () {
@@ -70,8 +75,15 @@ export default {
           console.info(err)
           return
         }
-        localStorage.setItem(settings.authProfile, JSON.stringify(profile))
-        this.setAuth(){{#if_eq api "firebase"}}
+
+        let payload = {
+          email: profile.email,
+          name: profile.name,
+          nickname: profile.nickname,
+          picture: profile.picture,
+          user_id: profile.user_id
+        }{{#if_eq api "ajax"}}
+        this.setAuth(payload){{/if_eq}}{{#if_eq api "firebase"}}
 
         if (settings.firebase) {
           var options = {
@@ -85,9 +97,22 @@ export default {
           this.auth0.getDelegationToken(options, (err, result) => {
             if (!err) {
               // Exchange the delegate token for a Firebase auth token
-              this.$firebase.auth().signInWithCustomToken(result.id_token).catch(console.error)
+              this.$firebase.auth().signInWithCustomToken(result.id_token).catch(console.error).then(() => {
+                const userRef = this.$db.ref('users/' + profile.user_id)
+                userRef.once('value').then(snap => {
+                  snap = snap.val()
+                  if (!snap) {
+                    userRef.set(payload)
+                    this.setAuth(payload)
+                  } else {
+                    this.setAuth(snap)
+                  }
+                })
+              })
             }
           })
+        } else {
+          this.setAuth(payload)
         }{{/if_eq}}
       })
     },
