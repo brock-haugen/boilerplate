@@ -1,0 +1,28 @@
+
+// PATHS
+
+path / {
+  read() { isSignedIn() }
+  write() { isSignedIn() }
+}
+
+path /users/{uid} is User {
+  read() { isSignedIn() }
+  write() { isSignedIn() && (createOnly(this) || isCurrentUser(uid)) }
+}
+
+// TYPES
+
+type User {
+  email: String,
+  name: String,
+  nickname: String | Null,
+  picture: String | Null,
+  userId: String | Null
+}
+
+// HELPERS
+
+createOnly(value) { prior(value) == null && value != null }
+isCurrentUser(uid) { isSignedIn() && auth.uid == uid }
+isSignedIn() { auth != null }

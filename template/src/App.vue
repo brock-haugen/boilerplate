@@ -21,7 +21,16 @@
       <el-button v-else @click='login()'>Login</el-button>{{/if}}
     </div>
     <!-- router view (content) -->
-    <router-view></router-view>
+    {{#unless auth0}}<router-view></router-view>
+    {{/unless}}{{#if auth0}}<div v-if='isAuthenticated && authUser'>
+      <router-view></router-view>
+    </div>
+    <div v-else-if='isCheckingAuth'>
+      Loading...
+    </div>
+    <div v-else>
+      <h3 style='text-align: center;'>Welcome! Please <el-button type='text' @click='login()'><h3>login</h3></el-button></h3>
+    </div>{{/if}}
   </div>
 </template>
 
@@ -36,6 +45,7 @@ export default {
   {{#if auth0}}data () {
     return {
       auth0: null,
+      isCheckingAuth: true,
       lock: null
     }
   },
@@ -73,6 +83,7 @@ export default {
       this.lock.getUserInfo(accessToken, (err, profile) => {
         if (err) {
           console.info(err)
+          this.logout()
           return
         }
 
@@ -80,8 +91,7 @@ export default {
           email: profile.email,
           name: profile.name,
           nickname: profile.nickname,
-          picture: profile.picture,
-          user_id: profile.user_id
+          picture: profile.picture
         }{{#if_eq api "ajax"}}
         this.setAuth(payload){{/if_eq}}{{#if_eq api "firebase"}}
 
@@ -107,12 +117,13 @@ export default {
                   } else {
                     this.setAuth(snap)
                   }
+                  userRef.on('value', snap => this.setAuth(snap.val()))
                 })
               })
+            } else {
+              this.logout()
             }
           })
-        } else {
-          this.setAuth(payload)
         }{{/if_eq}}
       })
     },
@@ -125,6 +136,7 @@ export default {
 
       // handle authenticated user
       this.lock.on('authenticated', authResult => {
+        this.isCheckingAuth = true
         localStorage.setItem(settings.authAccessToken, authResult.accessToken)
         localStorage.setItem(settings.authToken, authResult.idToken)
         this.getProfile()
@@ -138,6 +150,7 @@ export default {
         localStorage.clear()
         this.setAuth()
         this.$router.push('/')
+        this.isCheckingAuth = false
       }).catch(console.error){{/if_eq}}{{#if_eq api "ajax"}}localStorage.clear()
       this.setAuth()
       this.$router.push('/'){{/if_eq}}
@@ -150,6 +163,8 @@ export default {
       this.initializeAuth0()
       if (this.isAuthenticated) {
         this.getProfile()
+      } else {
+        this.isCheckingAuth = false
       }
     }{{/if}}
   }
@@ -197,4 +212,7 @@ body {
   display: inline-block;
   margin: 0;
 }
-</style>
+{{#if auth0}}.header .el-dropdown-link {
+  cursor: pointer;
+}
+{{/if}}</style>
