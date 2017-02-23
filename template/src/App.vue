@@ -4,7 +4,7 @@
     <div class='header'>
       <router-link to='/' class='home-link'>
         <img src='./assets/logo.png'>
-        <h4>{{ lowercase name }}</h4>
+        <h4>{{ name }}</h4>
       </router-link>{{#if auth0}}
       <!-- user dropdown -->
       <el-dropdown v-if='isAuthenticated && authUser' trigger='click'>
