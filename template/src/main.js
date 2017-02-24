@@ -1,8 +1,7 @@
 import Vue from 'vue'
-import head from './head'
 import router from './router'
-import store from './store'
-
+{{#if_eq api "ajax"}}import store from './store'
+{{/if_eq}}
 import {{#if_eq api "firebase"}}'./firebase'{{/if_eq}}{{#if_eq api "ajax"}}'./api'{{/if_eq}}
 
 import VueHead from 'vue-head'
@@ -13,7 +12,10 @@ import locale from 'element-ui/lib/locale/lang/en'
 import 'element-ui/lib/theme-default/index.css'
 Vue.use(ElementUI, { locale })
 
-import App from './App'
+{{#if auth0}}import AuthMixin from 'mixins/auth'
+Vue.mixin(AuthMixin)
+
+{{/if}}import App from './App'
 
 /* eslint-disable no-new */
 new Vue({
@@ -34,8 +36,8 @@ new Vue({
     ]
   },
   router,
-  store,
-  template: '<App />',
+  {{#if_eq api "ajax"}}store,
+  {{/if_eq}}template: '<App />',
   components: { App },
   watch: {
     $route (n, o) {

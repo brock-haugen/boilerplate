@@ -44,8 +44,10 @@ module.exports = {
     }
   },
   "filters": {
+    "src/mixins/auth.js": "auth0",
     "src/api/*": "api == 'ajax'",
     "src/components/Hello.vue": "api == 'ajax'",
+    "src/store/*": "api == 'ajax'",
     ".firebaserc": "api == 'firebase'",
     "firebase.json": "api == 'firebase'",
     "src/firebase/*": "api == 'firebase'",

@@ -8,8 +8,6 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-
 export default {
   name: 'firebase-demo',
   firebase () {
@@ -17,7 +15,6 @@ export default {
       stamps: this.$db.ref('stamps')
     }
   },
-  computed: mapGetters([ 'isAuthenticated' ]),
   methods: {
     addTimeStamp () {
       this.$firebaseRefs.stamps.push({
